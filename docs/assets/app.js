@@ -14,12 +14,15 @@
   // kinds: count = whole number 0 or more; amount = number 0 or more; price = number above 0
   function check(el){
     var kind = el.getAttribute("data-kind") || "amount";
-    var raw = String(el.value).replace(/[$,\s]/g, "");
+    var raw = String(el.value).trim().replace(/^\$\s*/, "");
     var msg = "", v = NaN;
+    // commas only as thousands separators (1,250.50); no inner spaces
+    var okNum = /^(\d{1,3}(,\d{3})+|\d+)(\.\d*)?$|^\.\d+$/;
     if(raw === "") msg = "Enter a number.";
-    else if(!/^\d*\.?\d+$|^\d+\.$/.test(raw)) msg = /^-/.test(raw) ? "Can't be negative." : "Numbers only.";
+    else if(/^-/.test(raw)) msg = "Can't be negative.";
+    else if(!okNum.test(raw)) msg = /,/.test(raw) ? "Use a period for decimals, like 1.5." : "Numbers only, no spaces.";
     else {
-      v = parseFloat(raw);
+      v = parseFloat(raw.replace(/,/g, ""));
       if(kind === "count" && v % 1 !== 0) msg = "Whole numbers only.";
       else if(kind === "price" && !(v > 0)) msg = "Price has to be above zero.";
     }

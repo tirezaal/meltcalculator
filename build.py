@@ -228,7 +228,9 @@ def build_junk():
               ("j-40", "40% Kennedy halves (1965-1970)", half40, "0"),
               ("j-35", "35% war nickels (1942-1945)", nick, "0")]
     ins = "".join(f'<div><label for="{i}">{esc(l)}, face value ($)</label><input id="{i}" inputmode="decimal" data-face-oz="{oz}" value="{v}" data-kind="amount"></div>' for i, l, oz, v in fields)
-    trs = "".join(f'<tr><td>{money(f)} face</td><td class="n">{dime*f:.3f} oz</td><td class="n" data-melt="silver" data-oz="{dime}" data-mult="{f}">{money(dime*f*SPOT["silver"])}</td></tr>' for f in (1, 10, 100, 1000))
+    trs = "".join(f'<tr><td>{money(f)} face</td>'
+                  f'<td class="n" data-melt="silver" data-oz="0.715" data-mult="{f}">{money(0.715*f*SPOT["silver"])}</td>'
+                  f'<td class="n" data-melt="silver" data-oz="{dime}" data-mult="{f}">{money(dime*f*SPOT["silver"])}</td></tr>' for f in (1, 10, 100, 1000))
     body = f"""
 <section class="hero">
   <div class="eyebrow">Junk silver</div>
@@ -250,7 +252,8 @@ def build_junk():
   </div>
 </section>
 <h2>90% silver by face value</h2>
-<div class="tablewrap"><table><thead><tr><th>Face value</th><th class="n">Pure silver</th><th class="n">Melt value</th></tr></thead><tbody>{trs}</tbody></table></div>
+<p class="small">Circulated uses 0.715 oz of silver per $1 face, the figure most dealers use for worn coins. Full mint weight uses {dime:.4f} oz, for uncirculated coins.</p>
+<div class="tablewrap"><table><thead><tr><th>Face value</th><th class="n">Circulated</th><th class="n">Full mint weight</th></tr></thead><tbody>{trs}</tbody></table></div>
 <h2>How the math works</h2>
 <p>A new 90% dime holds {dime*0.1:.7f} troy oz of silver. Quarters and halves are exactly 2.5 and 5 times that, so every dollar of face value in 90% coins holds {dime:.4f} oz no matter which mix you have. Worn coins weigh a bit less, so most dealers figure 0.715 oz per dollar of face for circulated junk. The calculator uses that by default; switch to full mint weight for uncirculated coins.</p>
 <p>40% Kennedy halves hold {half40:.4f} oz per dollar of face, and 35% war nickels hold {nick:.4f} oz per dollar of face.</p>
