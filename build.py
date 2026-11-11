@@ -8,6 +8,10 @@ SITE = "https://meltcalculator.plainsmadeco.com"
 ETSY = "https://www.etsy.com/shop/PlainsMadeCo"
 SPOT = json.loads((DOCS / "data" / "spot.json").read_text())
 
+import hashlib
+def ver(name):
+    return hashlib.md5((DOCS / "assets" / name).read_bytes()).hexdigest()[:8]
+
 def esc(s): return html.escape(str(s), quote=True)
 def money(n): return "${:,.2f}".format(n)
 def melt(c, mult=1): return c["oz"] * SPOT[c["metal"]] * mult
@@ -44,6 +48,7 @@ NAV = [("/", "Calculator"), ("/junk-silver/", "Junk silver"), ("/bars-and-rounds
 
 def page(path, title, desc, body, jsonld=None):
     nav = "".join(f'<a href="{h}"{" aria-current=page" if h == path else ""}>{t}</a>' for h, t in NAV)
+    nav += '<button type="button" class="nav-help" data-help-open>Help</button>'
     ld = f'<script type="application/ld+json">{json.dumps(jsonld)}</script>' if jsonld else ""
     back = '<a class="back" href="/" data-back>&larr; Back</a>' if path != "/" else ""
     out = f"""<!doctype html>
@@ -62,7 +67,7 @@ def page(path, title, desc, body, jsonld=None):
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%23161512'/%3E%3Ccircle cx='16' cy='16' r='10.5' fill='none' stroke='%23F5F0E6' stroke-width='1.5'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&family=Newsreader:opsz,wght@6..72,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/style.css">
+<link rel="stylesheet" href="/assets/style.css?v={ver('style.css')}">
 {ld}
 </head>
 <body>
@@ -86,9 +91,9 @@ def page(path, title, desc, body, jsonld=None):
   <span>Spot prices refresh twice a day and are indicative, not a dealer quote. <a href="/about/">How the numbers work</a></span>
 </div></footer>
 <script>window.SPOT={json.dumps(SPOT)};</script>
-<script src="/assets/app.js" defer></script>
-<script src="/assets/help-index.js" defer></script>
-<script src="/assets/help.js" defer></script>
+<script src="/assets/app.js?v={ver('app.js')}" defer></script>
+<script src="/assets/help-index.js?v={ver('help-index.js')}" defer></script>
+<script src="/assets/help.js?v={ver('help.js')}" defer></script>
 </body>
 </html>
 """
@@ -135,6 +140,7 @@ def build_home():
   <div class="eyebrow">Silver and gold coin melt values</div>
   <h1>What's your silver and gold worth?</h1>
   <p class="lede">Pick a coin, enter how many you have, and see the metal value at today's spot price. Every number is worked out from the coin's real weight and purity.</p>
+  <button type="button" class="help-cta" data-help-open><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M9.3 9.2a2.8 2.8 0 1 1 3.9 2.6c-.8.4-1.2.9-1.2 1.7v.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="17.2" r="1.1" fill="currentColor"/></svg>First time here? Ask where to find something</button>
   <div class="calc" id="calc">
     <div class="in">
       <div><label for="coin">Coin</label><select id="coin" aria-describedby="selected-coin">{opts}</select><p class="selected-coin" id="selected-coin">Washington Quarter (1932-1964)</p></div>

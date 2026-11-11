@@ -96,12 +96,15 @@
       out.appendChild(el("p", "help-note", "I couldn't match that to a page. Try a coin name with its year, like \"1943 nickel\", or one of the topics below."));
       a.res = ["/", "/is-my-coin-silver/", "/about/"].map(function(u){ return {p:byUrl[u], why:byUrl[u].d}; });
     }
+    out.appendChild(el("div", "help-label", a.res.length === 1 ? "Here's where to look" : "Here's where to look"));
     var ul = el("ul", "help-results");
     a.res.forEach(function(r){
       var li = el("li"), link = el("a", null, r.p.t);
       link.href = r.p.u;
       if(/^https?:/.test(r.p.u)){ link.target = "_blank"; link.rel = "noopener"; }
-      li.appendChild(link); li.appendChild(el("span", null, r.why));
+      link.appendChild(el("span", "help-why", r.why));
+      link.appendChild(el("span", "help-go", "\u2192"));
+      li.appendChild(link);
       ul.appendChild(li);
     });
     out.appendChild(ul);
@@ -109,37 +112,61 @@
 
   function setOpen(v){
     open = v; panel.hidden = !v; btn.setAttribute("aria-expanded", v ? "true" : "false");
+    btn.classList.toggle("is-open", v); document.documentElement.classList.toggle("help-open", v);
     if(v){ lastFocus = document.activeElement; input.focus(); }
     else if(lastFocus && lastFocus.focus){ lastFocus.focus(); }
   }
 
+  var ICON_Q = '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M9.3 9.2a2.8 2.8 0 1 1 3.9 2.6c-.8.4-1.2.9-1.2 1.7v.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="17.2" r="1.1" fill="currentColor"/></svg>';
+  var ICON_X = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+  var ICON_S = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M16 16l4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>';
+
   function build(){
-    btn = el("button", "help-btn", "Need help?");
+    btn = el("button", "help-btn");
+    btn.innerHTML = ICON_Q + '<span>Ask a question</span>';
     btn.type = "button"; btn.setAttribute("aria-controls", "help-panel"); btn.setAttribute("aria-expanded", "false");
+
     panel = el("div", "help-panel"); panel.id = "help-panel"; panel.hidden = true;
-    panel.setAttribute("role", "dialog"); panel.setAttribute("aria-label", "Find something on this site");
+    panel.setAttribute("role", "dialog"); panel.setAttribute("aria-labelledby", "help-title");
+
     var head = el("div", "help-head");
-    head.appendChild(el("strong", null, "Find something"));
-    var x = el("button", "help-x", "Close"); x.type = "button";
-    head.appendChild(x);
+    var av = el("div", "help-avatar"); av.innerHTML = ICON_Q;
+    var ht = el("div", "help-titles");
+    var h2 = el("div", "help-title", "Hi! What can I help you find?"); h2.id = "help-title";
+    ht.appendChild(h2);
+    ht.appendChild(el("div", "help-sub", "Ask about a coin, a year, or a pile of silver and I'll point you to the right page."));
+    var x = el("button", "help-x"); x.type = "button"; x.innerHTML = ICON_X; x.setAttribute("aria-label", "Close help");
+    head.appendChild(av); head.appendChild(ht); head.appendChild(x);
+
+    var body = el("div", "help-body");
     var form = el("form", "help-form");
-    var lab = el("label", null, "What are you looking for?"); lab.setAttribute("for", "help-q");
-    input = el("input"); input.id = "help-q"; input.type = "search"; input.autocomplete = "off";
-    input.placeholder = "e.g. 1964 quarter, silver bars, 14k ring";
-    form.appendChild(lab); form.appendChild(input);
+    var lab = el("label", "help-sr", "Your question"); lab.setAttribute("for", "help-q");
+    var box = el("div", "help-search"); var si = el("span", "help-si"); si.innerHTML = ICON_S;
+    input = el("input"); input.id = "help-q"; input.type = "search"; input.autocomplete = "off"; input.enterKeyHint = "search";
+    input.placeholder = "Try \"1964 quarter\" or \"14k ring\"";
+    box.appendChild(si); box.appendChild(input);
+    form.appendChild(lab); form.appendChild(box);
     out = el("div", "help-out"); out.setAttribute("aria-live", "polite");
+    var chipWrap = el("div", "help-popular");
+    chipWrap.appendChild(el("div", "help-label", "Popular questions"));
     var chips = el("div", "help-chips");
-    CHIPS.forEach(function(c){ var b = el("button", "help-chip", c); b.type = "button"; b.addEventListener("click", function(){ input.value = c; show(c); }); chips.appendChild(b); });
-    panel.appendChild(head); panel.appendChild(form); panel.appendChild(out); panel.appendChild(chips);
-    panel.appendChild(el("p", "help-foot", "This guide runs right on this page. Your question isn't sent anywhere."));
+    CHIPS.forEach(function(c){ var b = el("button", "help-chip", c); b.type = "button"; b.addEventListener("click", function(){ input.value = c; show(c); input.focus(); }); chips.appendChild(b); });
+    chipWrap.appendChild(chips);
+    body.appendChild(form); body.appendChild(out); body.appendChild(chipWrap);
+
+    panel.appendChild(head); panel.appendChild(body);
+    panel.appendChild(el("p", "help-foot", "Runs right on this page. Your question isn't sent anywhere."));
     document.body.appendChild(panel); document.body.appendChild(btn);
 
     btn.addEventListener("click", function(){ setOpen(!open); });
     x.addEventListener("click", function(){ setOpen(false); });
+    Array.prototype.forEach.call(document.querySelectorAll("[data-help-open]"), function(b){
+      b.addEventListener("click", function(e){ e.preventDefault(); e.stopPropagation(); setOpen(true); });
+    });
     form.addEventListener("submit", function(e){ e.preventDefault(); show(input.value); });
     var t; input.addEventListener("input", function(){ clearTimeout(t); t = setTimeout(function(){ show(input.value); }, 180); });
     document.addEventListener("keydown", function(e){ if(e.key === "Escape" && open) setOpen(false); });
-    document.addEventListener("click", function(e){ if(open && !panel.contains(e.target) && e.target !== btn) setOpen(false); });
+    document.addEventListener("click", function(e){ if(open && !panel.contains(e.target) && !btn.contains(e.target)) setOpen(false); });
   }
 
   window.MeltHelp = {answer:answer};
