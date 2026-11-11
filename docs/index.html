@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Coin Melt Value Calculator: Silver and Gold at Today&#x27;s Spot | Melt Calculator</title>
+<meta name="description" content="Free melt value calculator for US silver and gold coins. Dimes, quarters, halves, Morgan dollars, war nickels and gold, priced at today&#x27;s spot.">
+<link rel="canonical" href="https://meltcalculator.plainsmadeco.com/">
+<meta property="og:title" content="Coin Melt Value Calculator: Silver and Gold at Today&#x27;s Spot | Melt Calculator">
+<meta property="og:description" content="Free melt value calculator for US silver and gold coins. Dimes, quarters, halves, Morgan dollars, war nickels and gold, priced at today&#x27;s spot.">
+<meta property="og:url" content="https://meltcalculator.plainsmadeco.com/">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#F5F0E6">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%23161512'/%3E%3Ccircle cx='16' cy='16' r='10.5' fill='none' stroke='%23F5F0E6' stroke-width='1.5'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&family=Newsreader:opsz,wght@6..72,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/style.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebSite", "name": "Melt Calculator", "url": "https://meltcalculator.plainsmadeco.com/", "publisher": {"@type": "Organization", "name": "PlainsMadeCo", "url": "https://plainsmadeco.com"}}</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top"><div class="wrap">
+  <a class="brand" href="/"><b>Melt Calculator</b><span>by PlainsMadeCo</span></a>
+  <nav class="nav" aria-label="Main"><a href="/" aria-current=page>Calculator</a><a href="/junk-silver/">Junk silver</a><a href="/bars-and-rounds/">Bars and rounds</a><a href="/is-my-coin-silver/">Is it silver?</a><a href="/about/">About</a></nav>
+</div></header>
+<div class="spotbar"><div class="wrap">
+  <span>Silver <strong data-spot="silver">$52.38</strong></span>
+  <span>Gold <strong data-spot="gold">$4,047.05</strong></span>
+  <span>Spot as of Nov 11, 2026</span>
+  <span data-custom-flag hidden>Using your custom spot</span>
+</div></div>
+<main id="main" class="wrap">
+
+<section class="hero">
+  <div class="eyebrow">Silver and gold coin melt values</div>
+  <h1>What's your silver and gold worth?</h1>
+  <p class="lede">Pick a coin, enter how many you have, and see the metal value at today's spot price. Every number is worked out from the coin's real weight and purity.</p>
+  <div class="calc" id="calc">
+    <div class="in">
+      <div><label for="coin">Coin</label><select id="coin"><optgroup label="Nickels"><option value="war-nickel" data-oz="0.0562638" data-metal="silver" data-short="War nickel">Jefferson War Nickel (1942-1945)</option></optgroup><optgroup label="Dimes"><option value="barber-dime" data-oz="0.0723392" data-metal="silver" data-short="Barber dime">Barber Dime (1892-1916)</option><option value="mercury-dime" data-oz="0.0723392" data-metal="silver" data-short="Mercury dime">Mercury Dime (1916-1945)</option><option value="roosevelt-dime-silver" data-oz="0.0723392" data-metal="silver" data-short="Silver Roosevelt dime">Roosevelt Dime (1946-1964)</option></optgroup><optgroup label="Quarters"><option value="barber-quarter" data-oz="0.1808479" data-metal="silver" data-short="Barber quarter">Barber Quarter (1892-1916)</option><option value="standing-liberty-quarter" data-oz="0.1808479" data-metal="silver" data-short="Standing Liberty quarter">Standing Liberty Quarter (1916-1930)</option><option value="washington-quarter-silver" data-oz="0.1808479" data-metal="silver" data-short="Silver Washington quarter" selected>Washington Quarter (1932-1964)</option></optgroup><optgroup label="Half dollars"><option value="barber-half" data-oz="0.3616959" data-metal="silver" data-short="Barber half">Barber Half Dollar (1892-1915)</option><option value="walking-liberty-half" data-oz="0.3616959" data-metal="silver" data-short="Walking Liberty half">Walking Liberty Half Dollar (1916-1947)</option><option value="franklin-half" data-oz="0.3616959" data-metal="silver" data-short="Franklin half">Franklin Half Dollar (1948-1963)</option><option value="kennedy-half-1964" data-oz="0.3616959" data-metal="silver" data-short="1964 Kennedy half">1964 Kennedy Half Dollar (1964)</option><option value="kennedy-half-40" data-oz="0.1478934" data-metal="silver" data-short="40% Kennedy half">Kennedy Half Dollar (1965-1970)</option></optgroup><optgroup label="Dollars"><option value="morgan-dollar" data-oz="0.7734505" data-metal="silver" data-short="Morgan dollar">Morgan Silver Dollar (1878-1904, 1921)</option><option value="peace-dollar" data-oz="0.7734505" data-metal="silver" data-short="Peace dollar">Peace Silver Dollar (1921-1928, 1934-1935)</option><option value="eisenhower-dollar-40" data-oz="0.3162347" data-metal="silver" data-short="40% Ike dollar">40% Silver Eisenhower Dollar (1971-1976)</option></optgroup><optgroup label="Silver bullion coins"><option value="american-silver-eagle" data-oz="1.0" data-metal="silver" data-short="Silver Eagle">American Silver Eagle (1986-present)</option><option value="silver-maple-leaf" data-oz="1.0" data-metal="silver" data-short="Silver Maple Leaf">Silver Maple Leaf (1988-present)</option></optgroup><optgroup label="US gold coins"><option value="double-eagle" data-oz="0.9674931" data-metal="gold" data-short="$20 Double Eagle">$20 Gold Double Eagle (1850-1933)</option><option value="gold-eagle-10" data-oz="0.4837466" data-metal="gold" data-short="$10 Eagle">$10 Gold Eagle (1838-1933)</option><option value="half-eagle" data-oz="0.2418733" data-metal="gold" data-short="$5 Half Eagle">$5 Gold Half Eagle (1839-1929)</option><option value="quarter-eagle" data-oz="0.1209511" data-metal="gold" data-short="$2.50 Quarter Eagle">$2.50 Gold Quarter Eagle (1840-1929)</option></optgroup><optgroup label="Gold bullion coins"><option value="american-gold-eagle" data-oz="1.0" data-metal="gold" data-short="1 oz Gold Eagle">American Gold Eagle (1 oz)</option><option value="krugerrand" data-oz="1.0" data-metal="gold" data-short="Krugerrand">Gold Krugerrand (1 oz)</option></optgroup></select></div>
+      <div><label for="qty">How many</label><input id="qty" type="number" inputmode="numeric" min="0" step="1" value="1"></div>
+      <div class="row2">
+      <div><label for="sp-s">Silver spot ($/oz)</label><input id="sp-s" inputmode="decimal" data-spotin="silver" autocomplete="off"></div>
+      <div><label for="sp-g">Gold spot ($/oz)</label><input id="sp-g" inputmode="decimal" data-spotin="gold" autocomplete="off"></div>
+    </div>
+    <button class="btnlink" type="button" data-reset-spot>Reset to today's spot</button>
+    </div>
+    <div class="out" aria-live="polite">
+      <div class="small">Melt value</div>
+      <div class="big" id="out-total">$9.47</div>
+      <dl class="kv">
+        <dt>Per coin</dt><dd id="out-per">$9.47</dd>
+        <dt><span id="out-metal">Silver</span> content</dt><dd id="out-oz">0.1808 oz</dd>
+      </dl>
+      <a class="note" id="out-link" href="/coins/washington-quarter-silver/">More on the Silver Washington quarter</a>
+    </div>
+  </div>
+</section>
+<h2>Melt value of one coin, by type</h2>
+<p class="small">At spot as of Nov 11, 2026. Tap a coin for the full breakdown.</p>
+<div class="groups"><div class="group"><h3>Nickels</h3><ul><li><a href="/coins/war-nickel/">War nickel</a><span data-melt="silver" data-oz="0.0562638">$2.95</span></li></ul></div><div class="group"><h3>Dimes</h3><ul><li><a href="/coins/barber-dime/">Barber dime</a><span data-melt="silver" data-oz="0.0723392">$3.79</span></li><li><a href="/coins/mercury-dime/">Mercury dime</a><span data-melt="silver" data-oz="0.0723392">$3.79</span></li><li><a href="/coins/roosevelt-dime-silver/">Silver Roosevelt dime</a><span data-melt="silver" data-oz="0.0723392">$3.79</span></li></ul></div><div class="group"><h3>Quarters</h3><ul><li><a href="/coins/barber-quarter/">Barber quarter</a><span data-melt="silver" data-oz="0.1808479">$9.47</span></li><li><a href="/coins/standing-liberty-quarter/">Standing Liberty quarter</a><span data-melt="silver" data-oz="0.1808479">$9.47</span></li><li><a href="/coins/washington-quarter-silver/">Silver Washington quarter</a><span data-melt="silver" data-oz="0.1808479">$9.47</span></li></ul></div><div class="group"><h3>Half dollars</h3><ul><li><a href="/coins/barber-half/">Barber half</a><span data-melt="silver" data-oz="0.3616959">$18.95</span></li><li><a href="/coins/walking-liberty-half/">Walking Liberty half</a><span data-melt="silver" data-oz="0.3616959">$18.95</span></li><li><a href="/coins/franklin-half/">Franklin half</a><span data-melt="silver" data-oz="0.3616959">$18.95</span></li><li><a href="/coins/kennedy-half-1964/">1964 Kennedy half</a><span data-melt="silver" data-oz="0.3616959">$18.95</span></li><li><a href="/coins/kennedy-half-40/">40% Kennedy half</a><span data-melt="silver" data-oz="0.1478934">$7.75</span></li></ul></div><div class="group"><h3>Dollars</h3><ul><li><a href="/coins/morgan-dollar/">Morgan dollar</a><span data-melt="silver" data-oz="0.7734505">$40.51</span></li><li><a href="/coins/peace-dollar/">Peace dollar</a><span data-melt="silver" data-oz="0.7734505">$40.51</span></li><li><a href="/coins/eisenhower-dollar-40/">40% Ike dollar</a><span data-melt="silver" data-oz="0.3162347">$16.56</span></li></ul></div><div class="group"><h3>Silver bullion coins</h3><ul><li><a href="/coins/american-silver-eagle/">Silver Eagle</a><span data-melt="silver" data-oz="1.0">$52.38</span></li><li><a href="/coins/silver-maple-leaf/">Silver Maple Leaf</a><span data-melt="silver" data-oz="1.0">$52.38</span></li></ul></div><div class="group"><h3>US gold coins</h3><ul><li><a href="/coins/double-eagle/">$20 Double Eagle</a><span data-melt="gold" data-oz="0.9674931">$3,915.49</span></li><li><a href="/coins/gold-eagle-10/">$10 Eagle</a><span data-melt="gold" data-oz="0.4837466">$1,957.75</span></li><li><a href="/coins/half-eagle/">$5 Half Eagle</a><span data-melt="gold" data-oz="0.2418733">$978.87</span></li><li><a href="/coins/quarter-eagle/">$2.50 Quarter Eagle</a><span data-melt="gold" data-oz="0.1209511">$489.50</span></li></ul></div><div class="group"><h3>Gold bullion coins</h3><ul><li><a href="/coins/american-gold-eagle/">1 oz Gold Eagle</a><span data-melt="gold" data-oz="1.0">$4,047.05</span></li><li><a href="/coins/krugerrand/">Krugerrand</a><span data-melt="gold" data-oz="1.0">$4,047.05</span></li></ul></div></div>
+<h2>How melt value works</h2>
+<p>Melt value is what the silver or gold inside a coin is worth at the current spot price. It is the floor, not the ceiling: dealers usually pay a little under melt for common worn silver, and scarce dates or high grades sell for well above it.</p>
+<p>Not sure if a coin is silver at all? Check the <a href="/is-my-coin-silver/">is my coin silver guide</a>. Have a pile of old dimes, quarters and halves? Use the <a href="/junk-silver/">junk silver calculator</a>.</p>
+<aside class="plug"><h3>Track your whole collection</h3>
+<p>The Coin Collection Tracker logs every coin with its silver and gold content and values the lot at today's spot. One file, works offline, no account.</p>
+<a href="https://www.etsy.com/shop/PlainsMadeCo">See it on Etsy</a></aside>
+
+</main>
+<footer><div class="wrap">
+  <span>Melt Calculator is made by <a href="https://plainsmadeco.com">PlainsMadeCo</a> in Lincoln, Nebraska.</span>
+  <span>Spot prices refresh daily and are indicative, not a dealer quote. <a href="/about/">How the numbers work</a></span>
+</div></footer>
+<script>window.SPOT={"gold": 4047.05, "silver": 52.38, "as_of": "2026-11-11T03:51:00Z", "source": "Alpha Vantage"};</script>
+<script src="/assets/app.js" defer></script>
+</body>
+</html>
