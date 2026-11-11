@@ -26,7 +26,8 @@
 <div class="spotbar"><div class="wrap">
   <span>Silver <strong data-spot="silver">$52.63</strong></span>
   <span>Gold <strong data-spot="gold">$4,043.50</strong></span>
-  <span>Spot as of Nov 11, 2026</span>
+  <span>Spot from xaus.com, updated <span data-asof>Nov 10, 10:43 PM CST</span></span>
+  <span class="stale" data-stale hidden>Price may be out of date</span>
   <span data-custom-flag hidden>Using your custom spot</span>
 </div></div>
 <main id="main" class="wrap">
@@ -42,14 +43,11 @@
         <div><label for="b-purity">Purity</label><select id="b-purity" data-purities="{&quot;silver&quot;: [[&quot;0.999&quot;, &quot;.999 fine&quot;], [&quot;0.9999&quot;, &quot;.9999 fine&quot;], [&quot;0.925&quot;, &quot;.925 sterling&quot;], [&quot;0.9&quot;, &quot;.900 US coin silver&quot;], [&quot;0.8&quot;, &quot;.800 silver&quot;]], &quot;gold&quot;: [[&quot;0.9999&quot;, &quot;.9999 fine (24 karat)&quot;], [&quot;0.999&quot;, &quot;.999 fine&quot;], [&quot;0.9167&quot;, &quot;22 karat (.9167)&quot;], [&quot;0.9&quot;, &quot;.900 US coin gold&quot;], [&quot;0.75&quot;, &quot;18 karat (.750)&quot;], [&quot;0.585&quot;, &quot;14 karat (.585)&quot;], [&quot;0.417&quot;, &quot;10 karat (.417)&quot;]]}"><option value="0.999">.999 fine</option><option value="0.9999">.9999 fine</option><option value="0.925">.925 sterling</option><option value="0.9">.900 US coin silver</option><option value="0.8">.800 silver</option></select></div>
       </div>
       <div class="row2">
-        <div><label for="b-weight">Weight</label><input id="b-weight" inputmode="decimal" value="10"></div>
+        <div><label for="b-weight">Weight</label><input id="b-weight" inputmode="decimal" value="10" data-kind="amount"></div>
         <div><label for="b-unit">Unit</label><select id="b-unit"><option value="oz">Troy ounces</option><option value="g">Grams</option><option value="kg">Kilograms</option><option value="dwt">Pennyweight (dwt)</option></select></div>
       </div>
-      <div><label for="b-qty">How many pieces</label><input id="b-qty" type="number" inputmode="numeric" min="0" step="1" value="1"></div>
-      <div class="row2">
-      <div><label for="sp-s">Silver spot ($/oz)</label><input id="sp-s" inputmode="decimal" data-spotin="silver" autocomplete="off"></div>
-      <div><label for="sp-g">Gold spot ($/oz)</label><input id="sp-g" inputmode="decimal" data-spotin="gold" autocomplete="off"></div>
-    </div>
+      <div><label for="b-qty">How many pieces</label><input id="b-qty" type="number" inputmode="numeric" min="0" step="1" value="1" data-kind="count"></div>
+      <div><div data-spotwrap="silver"><label for="sp-silver">Silver spot ($ per troy oz)</label><input id="sp-silver" inputmode="decimal" data-spotin="silver" data-kind="price" autocomplete="off"></div><div data-spotwrap="gold" hidden><label for="sp-gold">Gold spot ($ per troy oz)</label><input id="sp-gold" inputmode="decimal" data-spotin="gold" data-kind="price" autocomplete="off"></div></div>
     <button class="btnlink" type="button" data-reset-spot>Reset to today's spot</button>
     </div>
     <div class="out" aria-live="polite">
@@ -63,13 +61,13 @@
 <p>Precious metals are weighed in troy ounces. One troy ounce is 31.1034768 grams, a little heavier than a kitchen ounce. A pennyweight (dwt) is 1/20 of a troy ounce and is common for jewelry scrap.</p>
 <p>A bar stamped "10 oz .999" holds 9.99 oz of pure silver. Dealers usually price .999 bars and rounds on the stamped weight plus or minus a premium.</p>
 <aside class="plug"><h3>Track your whole collection</h3>
-<p>The Coin Collection Tracker logs every coin with its silver and gold content and values the lot at today's spot. One file, works offline, no account.</p>
-<a href="https://www.etsy.com/shop/PlainsMadeCo">See it on Etsy</a></aside>
+<p>The Coin Collection Tracker: Logs every coin with its silver and gold content and values the lot at today&#x27;s spot. App plus Excel spreadsheet, works offline, no account.</p>
+<a href="https://www.etsy.com/listing/4533946828/coin-collection-tracker-app-excel">See the Coin Collection Tracker on Etsy</a></aside>
 
 </main>
 <footer><div class="wrap">
   <span>Melt Calculator is made by <a href="https://plainsmadeco.com">PlainsMadeCo</a> in Lincoln, Nebraska.</span>
-  <span>Spot prices refresh daily and are indicative, not a dealer quote. <a href="/about/">How the numbers work</a></span>
+  <span>Spot prices refresh twice a day and are indicative, not a dealer quote. <a href="/about/">How the numbers work</a></span>
 </div></footer>
 <script>window.SPOT={"gold": 4043.5, "silver": 52.63, "as_of": "2026-11-11T04:43:32.155Z", "source": "xaus.com"};</script>
 <script src="/assets/app.js" defer></script>
