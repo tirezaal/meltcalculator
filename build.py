@@ -87,6 +87,8 @@ def page(path, title, desc, body, jsonld=None):
 </div></footer>
 <script>window.SPOT={json.dumps(SPOT)};</script>
 <script src="/assets/app.js" defer></script>
+<script src="/assets/help-index.js" defer></script>
+<script src="/assets/help.js" defer></script>
 </body>
 </html>
 """
@@ -354,7 +356,46 @@ def build_404():
     (DOCS / "404.html").write_text((DOCS / "404" / "index.html").read_text().replace('<link rel="canonical" href="' + SITE + '/404/">', ""))
     (DOCS / "404" / "index.html").unlink(); (DOCS / "404").rmdir()
 
+HELP_PAGES = [
+    ("/", "Melt calculator", "Pick any coin, enter how many, and see the melt value.",
+     ["calculator", "melt calculator", "how many", "start", "home", "main"]),
+    ("/junk-silver/", "Junk silver calculator", "Add up pre-1965 dimes, quarters and halves by face value.",
+     ["junk", "face", "pile", "bag", "roll", "mixed", "circulated", "lot", "junk silver"]),
+    ("/bars-and-rounds/", "Bars, rounds and scrap", "Melt value by weight and purity: bars, rounds, sterling and karat gold.",
+     ["bar", "round", "scrap", "sterling", "karat", "10 karat", "14 karat", "18 karat", "22 karat", "24 karat", ".999", "999", "925",
+      "gram", "kilogram", "pennyweight", "ounce", "weight", "purity", "fine", "gross", "weigh"]),
+    ("/is-my-coin-silver/", "Is my coin silver?", "Which US coins are silver by year, the edge test, and exceptions.",
+     ["silver", "is it silver", "is my", "how to tell", "tell", "edge", "copper", "clad", "which", "year", "proof", "1964", "1965", "cent", "identify"]),
+    ("/about/", "About and contact", "Where spot prices come from, how often they update, and how to report a mistake.",
+     ["about", "spot", "where", "source", "update", "updated", "how often", "accurate", "custom", "contact", "who", "math", "formula"]),
+]
+
+def write_help_index():
+    coins = []
+    for c in COINS:
+        k = set(w.lower().strip("()$,") for w in (c["name"] + " " + c["short"]).replace("-", " ").split())
+        k -= {"", "of", "the", "and", "oz", "1", "silver", "gold", "coin", "coins", "dollar", "quarter", "dime", "half", "eagle", "american"}
+        k = {w for w in k if not w.replace(".", "").replace("%", "").isdigit()}
+        first = c["slug"].split("-")[0]
+        if first not in {"silver", "gold", "american", "double", "half", "quarter"}: k.add(first)
+        extra = {"war-nickel": ["war", "nickel", "35%", "wartime"], "eisenhower-dollar-40": ["eisenhower", "dollar", "1776"],
+                 "american-silver-eagle": ["silver eagle", "eagle"], "american-gold-eagle": ["gold eagle", "eagle"],
+                 "double-eagle": ["double eagle", "$20", "saint", "gaudens"], "gold-eagle-10": ["$10", "10 dollar gold"],
+                 "half-eagle": ["half eagle", "$5", "5 dollar gold"], "quarter-eagle": ["quarter eagle", "$2.50"],
+                 "morgan-dollar": ["morgan", "dollar"], "peace-dollar": ["peace", "dollar"],
+                 "kennedy-half-40": ["kennedy", "40%"], "kennedy-half-1964": ["kennedy"]}
+        k |= set(extra.get(c["slug"], []))
+        coins.append({"u": f"/coins/{c['slug']}/", "t": c["name"], "d": f"{c['short']} melt value, specs and how to tell ({c['years']}).", "k": sorted(k)})
+    pages = [{"u": u, "t": t, "d": d, "k": k} for u, t, d, k in HELP_PAGES]
+    tk = {"coins": ["tracker", "collection", "catalog", "keep track", "log", "inventory"],
+          "junk": ["tracker", "junk", "keep track", "lots", "dealer offer"],
+          "bullion": ["tracker", "stack", "stacking", "keep track", "inventory", "cost basis"]}
+    for kind, (name, url, head, text) in LISTINGS.items():
+        pages.append({"u": url, "t": name + " (Etsy)", "d": text, "k": tk[kind]})
+    (DOCS / "assets" / "help-index.js").write_text("window.HELP_INDEX=" + json.dumps({"pages": pages, "coins": coins}, separators=(",", ":")) + ";\n")
+
 def main():
+    write_help_index()
     paths = [build_home(), build_junk(), build_bullion(), build_guide(), build_about()]
     paths += [build_coin(c) for c in COINS]
     build_404()
