@@ -4,9 +4,10 @@
   var spot = {gold:base.gold, silver:base.silver};
   var bad = {gold:false, silver:false};
   var KEY = "mc:spot", DASH = "--";
-  var STALE_HOURS = 36;
+  var STALE_HOURS = 36, MAX_INPUT = 1e12;
+  function validPrice(n){ return typeof n === "number" && Number.isFinite(n) && n > 0 && n <= MAX_INPUT; }
 
-  function money(n){ return "$" + n.toLocaleString("en-US",{minimumFractionDigits:2, maximumFractionDigits:2}); }
+  function money(n){ if(!Number.isFinite(n)) return DASH; return "$" + n.toLocaleString("en-US",{minimumFractionDigits:2, maximumFractionDigits:2}); }
   function $(s, r){ return (r||document).querySelector(s); }
   function $$(s, r){ return Array.prototype.slice.call((r||document).querySelectorAll(s)); }
 
@@ -23,7 +24,8 @@
     else if(!okNum.test(raw)) msg = /,/.test(raw) ? "Use a period for decimals, like 1.5." : "Numbers only, no spaces.";
     else {
       v = parseFloat(raw.replace(/,/g, ""));
-      if(kind === "count" && v % 1 !== 0) msg = "Whole numbers only.";
+      if(!Number.isFinite(v) || v > MAX_INPUT) msg = "Enter a finite number no greater than 1,000,000,000,000.";
+      else if(kind === "count" && v % 1 !== 0) msg = "Whole numbers only.";
       else if(kind === "price" && !(v > 0)) msg = "Price has to be above zero.";
     }
     var err = el.parentNode.querySelector(".err");
@@ -48,7 +50,7 @@
 
   // ---- custom spot (kept on this device only)
   function loadCustom(){
-    try { var s = JSON.parse(localStorage.getItem(KEY) || "null"); if(s && s.gold > 0 && s.silver > 0) return s; } catch(e){}
+    try { var s = JSON.parse(localStorage.getItem(KEY) || "null"); if(s && validPrice(s.gold) && validPrice(s.silver)) return s; } catch(e){}
     return null;
   }
   function saveCustom(s){ try { if(s) localStorage.setItem(KEY, JSON.stringify(s)); else localStorage.removeItem(KEY); } catch(e){} }
@@ -62,7 +64,7 @@
       el.textContent = d.toLocaleString("en-US", {month:"short", day:"numeric", hour:"numeric", minute:"2-digit", timeZoneName:"short"});
     }
     var stale = $("[data-stale]");
-    if(stale) stale.hidden = isNaN(d) || (Date.now() - d.getTime()) < STALE_HOURS * 3600e3;
+    if(stale) stale.hidden = !isNaN(d) && (Date.now() - d.getTime()) < STALE_HOURS * 3600e3;
   }
 
   // show only the spot box for the metal in use
@@ -71,10 +73,11 @@
   }
 
   function render(){
-    $$("[data-spot]").forEach(function(el){ el.textContent = money(spot[el.getAttribute("data-spot")]); });
+    $$("[data-quote-label]").forEach(function(el){ el.textContent = custom ? "your custom spot" : "the latest available spot"; });
+    $$("[data-spot]").forEach(function(el){ var m = el.getAttribute("data-spot"); el.textContent = bad[m] ? DASH : money(spot[m]); });
     $$("[data-melt]").forEach(function(el){
       var oz = parseFloat(el.getAttribute("data-oz")), m = el.getAttribute("data-melt"), mult = parseFloat(el.getAttribute("data-mult") || 1);
-      el.textContent = money(oz * spot[m] * mult);
+      el.textContent = bad[m] ? DASH : money(oz * spot[m] * mult);
     });
     $$("[data-custom-flag]").forEach(function(el){ el.hidden = !custom; });
     $$("input[data-spotin]").forEach(function(el){
@@ -86,6 +89,7 @@
       var sel = $("#coin"), opt = sel.options[sel.selectedIndex];
       var oz = parseFloat(opt.getAttribute("data-oz")), metal = opt.getAttribute("data-metal");
       showSpot($("#calc"), metal);
+      setOut("selected-coin", opt.textContent);
       var f = fields([$("#qty")]);
       $("#out-metal").textContent = metal === "gold" ? "Gold" : "Silver";
       var link = $("#out-link"); if(link){ link.href = "/coins/" + sel.value + "/"; link.textContent = "More on the " + opt.getAttribute("data-short"); }
@@ -119,6 +123,10 @@
     if($("#bullion")){
       var bm = $("#b-metal").value, unit = $("#b-unit").value, pur = parseFloat($("#b-purity").value);
       showSpot($("#bullion"), bm);
+      var fineBasis = $("#b-basis") && $("#b-basis").value === "fine";
+      $("#b-purity").disabled = !!fineBasis;
+      setOut("b-weight-label", fineBasis ? "Fine metal content per piece" : "Gross weight per piece");
+      if(fineBasis) pur = 1;
       var bf = fields([$("#b-weight"), $("#b-qty")]);
       var toOz = unit === "g" ? 1/31.1034768 : unit === "kg" ? 1000/31.1034768 : unit === "dwt" ? 0.05 : 1;
       if(bf.ok && !bad[bm]){
@@ -161,21 +169,42 @@
         var err = el.parentNode.querySelector(".err"); if(err) err.remove();
         el.removeAttribute("aria-invalid"); el.removeAttribute("aria-describedby"); el.value = "";
       });
+      // any other field left invalid goes back to its starting value
+      $$("input[aria-invalid]").forEach(function(el){
+        el.value = el.defaultValue;
+        var err = el.parentNode.querySelector(".err"); if(err) err.remove();
+        el.removeAttribute("aria-invalid"); el.removeAttribute("aria-describedby");
+      });
       render();
+      refreshSpot(true);
     }
   });
 
-  // pick up a newer price if the page was cached
-  try {
-    fetch("/data/spot.json", {cache:"no-cache"}).then(function(r){ return r.ok ? r.json() : null; }).then(function(d){
-      if(d && d.gold > 0 && d.silver > 0){
+  // Refresh a persistent tab, while retaining the latest good quote on failure.
+  var refreshing = false, lastAttempt = 0;
+  function refreshSpot(force){
+    renderSource();
+    if(refreshing || (!force && Date.now() - lastAttempt < 60000)) return;
+    refreshing = true; lastAttempt = Date.now();
+    var controller = new AbortController();
+    var timeout = setTimeout(function(){ controller.abort(); }, 10000);
+    fetch("/data/spot.json", {cache:"no-cache", signal:controller.signal})
+      .then(function(r){ if(!r.ok) throw new Error("Quote unavailable"); return r.json(); })
+      .then(function(d){
+        var stamp = d && Date.parse(d.as_of), previous = Date.parse(base.as_of);
+        if(!d || !validPrice(d.gold) || !validPrice(d.silver) || !Number.isFinite(stamp) || stamp > Date.now() + 300000 || (Number.isFinite(previous) && stamp < previous)) return;
         base = d;
         if(!custom){ spot.gold = d.gold; spot.silver = d.silver; }
         renderSource(); render();
-      }
-    }).catch(function(){});
-  } catch(e){}
-
+      })
+      .catch(function(){ /* Keep the last successful quote and its real timestamp. */ })
+      .finally(function(){ clearTimeout(timeout); refreshing = false; renderSource(); });
+  }
+  setInterval(renderSource, 60000);
+  setInterval(function(){ if(!document.hidden) refreshSpot(false); }, 300000);
+  window.addEventListener("focus", function(){ refreshSpot(false); });
+  document.addEventListener("visibilitychange", function(){ if(!document.hidden) refreshSpot(false); });
   renderSource();
   render();
+  refreshSpot(true);
 })();

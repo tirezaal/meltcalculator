@@ -60,7 +60,7 @@ COINS = [
          ident="Every Peace dollar is 90% silver."),
     dict(slug="eisenhower-dollar-40", name="40% Silver Eisenhower Dollar", short="40% Ike dollar", metal="silver",
          years="1971-1976", grams=24.59, fineness=0.40, face=1.00, group="Dollars",
-         ident="Only the S-mint collector Eisenhower dollars (sold in blue packs and brown boxes, plus proofs) are 40% silver. Ikes from circulation are copper-nickel with no silver."),
+         ident="Only the 40% silver collector Eisenhower dollars contain silver: the S-mint uncirculated coins sold in blue packs and the S-mint silver proofs sold in brown boxes. An S mint mark or proof finish alone does not mean silver, because the Mint also struck copper-nickel clad S-mint proofs, including every Ike in the regular proof sets from 1973 through 1978. Ikes from circulation are copper-nickel with no silver."),
     # ---- silver bullion coins
     dict(slug="american-silver-eagle", name="American Silver Eagle", short="Silver Eagle", metal="silver",
          years="1986-present", grams=31.103, fineness=0.999, fine_oz=1.0, face=None, group="Silver bullion coins",

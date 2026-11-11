@@ -38,12 +38,14 @@
   <p class="lede">For anything sold by weight: silver bars and rounds, gold bars, sterling flatware or karat gold jewelry. Enter the weight and purity and get the metal value.</p>
   <div class="calc" id="bullion">
     <div class="in">
+      <div><label for="b-basis">Weight basis</label><select id="b-basis" aria-describedby="b-basis-help"><option value="gross">Gross weight (purity applied)</option><option value="fine">Fine metal content (already pure)</option></select>
+      <p class="small" id="b-basis-help">Gross weight is what the piece weighs, alloy included. Fine metal content is the pure metal the maker states. Check the maker's spec if you're not sure.</p></div>
       <div class="row2">
         <div><label for="b-metal">Metal</label><select id="b-metal"><option value="silver">Silver</option><option value="gold">Gold</option></select></div>
         <div><label for="b-purity">Purity</label><select id="b-purity" data-purities="{&quot;silver&quot;: [[&quot;0.999&quot;, &quot;.999 fine&quot;], [&quot;0.9999&quot;, &quot;.9999 fine&quot;], [&quot;0.925&quot;, &quot;.925 sterling&quot;], [&quot;0.9&quot;, &quot;.900 US coin silver&quot;], [&quot;0.8&quot;, &quot;.800 silver&quot;]], &quot;gold&quot;: [[&quot;0.9999&quot;, &quot;.9999 fine (24 karat)&quot;], [&quot;0.999&quot;, &quot;.999 fine&quot;], [&quot;0.9167&quot;, &quot;22 karat (.9167)&quot;], [&quot;0.9&quot;, &quot;.900 US coin gold&quot;], [&quot;0.75&quot;, &quot;18 karat (.750)&quot;], [&quot;0.585&quot;, &quot;14 karat (.585)&quot;], [&quot;0.417&quot;, &quot;10 karat (.417)&quot;]]}"><option value="0.999">.999 fine</option><option value="0.9999">.9999 fine</option><option value="0.925">.925 sterling</option><option value="0.9">.900 US coin silver</option><option value="0.8">.800 silver</option></select></div>
       </div>
       <div class="row2">
-        <div><label for="b-weight">Weight</label><input id="b-weight" inputmode="decimal" value="10" data-kind="amount"></div>
+        <div><label for="b-weight" id="b-weight-label">Gross weight per piece</label><input id="b-weight" inputmode="decimal" value="10" data-kind="amount"></div>
         <div><label for="b-unit">Unit</label><select id="b-unit"><option value="oz">Troy ounces</option><option value="g">Grams</option><option value="kg">Kilograms</option><option value="dwt">Pennyweight (dwt)</option></select></div>
       </div>
       <div><label for="b-qty">How many pieces</label><input id="b-qty" type="number" inputmode="numeric" min="0" step="1" value="1" data-kind="count"></div>
@@ -59,10 +61,10 @@
 </section>
 <h2>Units</h2>
 <p>Precious metals are weighed in troy ounces. One troy ounce is 31.1034768 grams, a little heavier than a kitchen ounce. A pennyweight (dwt) is 1/20 of a troy ounce and is common for jewelry scrap.</p>
-<p>A bar stamped "10 oz .999" holds 9.99 oz of pure silver. Dealers usually price .999 bars and rounds on the stamped weight plus or minus a premium.</p>
-<aside class="plug"><h3>Track your whole collection</h3>
-<p>The Coin Collection Tracker: Logs every coin with its silver and gold content and values the lot at today&#x27;s spot. App plus Excel spreadsheet, works offline, no account.</p>
-<a href="https://www.etsy.com/listing/4533946828/coin-collection-tracker-app-excel">See the Coin Collection Tracker on Etsy</a></aside>
+<p>A piece that weighs 10 troy oz at .999 purity holds 9.99 oz of pure silver. Some makers state the pure content instead, for example "contains 10 oz fine silver." In that case pick Fine metal content and enter 10. A stamp alone doesn't always say which one it means, so check the maker's spec.</p>
+<aside class="plug"><h3>Track your stack</h3>
+<p>The Gold and Silver Inventory Tracker: Logs bars, rounds and bullion coins with cost basis and values the whole stack at today&#x27;s spot. App plus Excel spreadsheet, works offline.</p>
+<a href="https://www.etsy.com/listing/4544380206/bullion-stack-tracker-gold-silver">See the Gold and Silver Inventory Tracker on Etsy</a></aside>
 
 </main>
 <footer><div class="wrap">

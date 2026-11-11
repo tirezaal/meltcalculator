@@ -135,7 +135,7 @@ def build_home():
   <p class="lede">Pick a coin, enter how many you have, and see the metal value at today's spot price. Every number is worked out from the coin's real weight and purity.</p>
   <div class="calc" id="calc">
     <div class="in">
-      <div><label for="coin">Coin</label><select id="coin">{opts}</select></div>
+      <div><label for="coin">Coin</label><select id="coin" aria-describedby="selected-coin">{opts}</select><p class="selected-coin" id="selected-coin">Washington Quarter (1932-1964)</p></div>
       <div><label for="qty">How many</label><input id="qty" type="number" inputmode="numeric" min="0" step="1" value="1" data-kind="count"></div>
       {spot_inputs()}
     </div>
@@ -151,7 +151,7 @@ def build_home():
   </div>
 </section>
 <h2>Melt value of one coin, by type</h2>
-<p class="small">At spot as of {ASOF}. Tap a coin for the full breakdown.</p>
+<p class="small">Values use the spot price shown at the top of the page. Tap a coin for the full breakdown.</p>
 <div class="groups">{groups}</div>
 <h2>How melt value works</h2>
 <p>Melt value is what the silver or gold inside a coin is worth at the current spot price. Think of it as a benchmark, not a price anyone has to pay: dealer offers on common worn silver often come in a little under melt, while scarce dates and high grades can sell well above it.</p>
@@ -183,7 +183,7 @@ def build_coin(c):
 <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Calculator</a> / {esc(c['group'])} / {esc(c['short'])}</nav>
 <div class="eyebrow">{esc(c['group'])} · {esc(c['years'])}</div>
 <h1>{esc(c['name'])} Melt Value</h1>
-<p class="lede">A {esc(c['short'])} contains {c['oz']:.4f} troy ounces of {metal}. At today's spot of {money(SPOT[metal])}, that is <strong>{money(per)}</strong> in {metal} per coin.</p>
+<p class="lede">A {esc(c['short'])} contains {c['oz']:.4f} troy ounces of {metal}. At <span data-quote-label>the latest available spot</span> of <span data-spot="{metal}">{money(SPOT[metal])}</span>, that is <strong data-melt="{metal}" data-oz="{c['oz']}">{money(per)}</strong> in {metal} per coin.</p>
 <div class="calc" id="coin-calc" data-oz="{c['oz']}" data-metal="{metal}">
   <div class="in">
     <div><label for="coin-qty">How many do you have?</label><input id="coin-qty" type="number" inputmode="numeric" min="0" step="1" value="1" data-kind="count"></div>
@@ -278,12 +278,14 @@ def build_bullion():
   <p class="lede">For anything sold by weight: silver bars and rounds, gold bars, sterling flatware or karat gold jewelry. Enter the weight and purity and get the metal value.</p>
   <div class="calc" id="bullion">
     <div class="in">
+      <div><label for="b-basis">Weight basis</label><select id="b-basis" aria-describedby="b-basis-help"><option value="gross">Gross weight (purity applied)</option><option value="fine">Fine metal content (already pure)</option></select>
+      <p class="small" id="b-basis-help">Gross weight is what the piece weighs, alloy included. Fine metal content is the pure metal the maker states. Check the maker's spec if you're not sure.</p></div>
       <div class="row2">
         <div><label for="b-metal">Metal</label><select id="b-metal"><option value="silver">Silver</option><option value="gold">Gold</option></select></div>
         <div><label for="b-purity">Purity</label><select id="b-purity" data-purities="{pdata}">{popts}</select></div>
       </div>
       <div class="row2">
-        <div><label for="b-weight">Weight</label><input id="b-weight" inputmode="decimal" value="10" data-kind="amount"></div>
+        <div><label for="b-weight" id="b-weight-label">Gross weight per piece</label><input id="b-weight" inputmode="decimal" value="10" data-kind="amount"></div>
         <div><label for="b-unit">Unit</label><select id="b-unit"><option value="oz">Troy ounces</option><option value="g">Grams</option><option value="kg">Kilograms</option><option value="dwt">Pennyweight (dwt)</option></select></div>
       </div>
       <div><label for="b-qty">How many pieces</label><input id="b-qty" type="number" inputmode="numeric" min="0" step="1" value="1" data-kind="count"></div>
@@ -298,8 +300,8 @@ def build_bullion():
 </section>
 <h2>Units</h2>
 <p>Precious metals are weighed in troy ounces. One troy ounce is {TROY_OZ_G} grams, a little heavier than a kitchen ounce. A pennyweight (dwt) is 1/20 of a troy ounce and is common for jewelry scrap.</p>
-<p>A bar stamped "10 oz .999" holds 9.99 oz of pure silver. Dealers usually price .999 bars and rounds on the stamped weight plus or minus a premium.</p>
-{plug()}
+<p>A piece that weighs 10 troy oz at .999 purity holds 9.99 oz of pure silver. Some makers state the pure content instead, for example "contains 10 oz fine silver." In that case pick Fine metal content and enter 10. A stamp alone doesn't always say which one it means, so check the maker's spec.</p>
+{plug("bullion")}
 """
     return page("/bars-and-rounds/", "Silver and Gold Bar, Round and Scrap Melt Calculator | Melt Calculator",
                 "Melt value for silver and gold bars, rounds, sterling and karat gold by weight and purity, at today's spot price.", body)
@@ -309,10 +311,10 @@ def build_guide():
     rows = [
         ("Cents", "None. Pennies were never silver. 1943 steel cents are steel, not silver.", None),
         ("Nickels", "1942-1945 war nickels with a large mint mark over Monticello are 35% silver.", "war-nickel"),
-        ("Dimes", "1964 and earlier are 90% silver. 1965 and later are not.", "roosevelt-dime-silver"),
+        ("Dimes", "1964 and earlier are 90% silver. 1965 and later circulation dimes are not; silver proof set dimes are the exception.", "roosevelt-dime-silver"),
         ("Quarters", "1964 and earlier are 90% silver. 1965 and later circulation quarters are not.", "washington-quarter-silver"),
         ("Half dollars", "1964 and earlier are 90% silver. 1965-1970 Kennedy halves are 40% silver. 1971 and later circulation halves are not.", "kennedy-half-1964"),
-        ("Dollars", "Morgan and Peace dollars are 90% silver. Only S-mint collector Eisenhower dollars are 40% silver. Susan B. Anthony, Sacagawea and Presidential dollars have no silver.", "morgan-dollar"),
+        ("Dollars", "Morgan and Peace dollars are 90% silver. Some S-mint collector Eisenhower dollars are 40% silver, but S-mint clad proofs also exist, so an S mint mark alone does not mean silver. Susan B. Anthony, Sacagawea and Presidential dollars have no silver.", "morgan-dollar"),
     ]
     trs = "".join(f'<tr><td>{esc(d)}</td><td>{esc(t)}{f" <a href=/coins/{s}/>Melt value</a>" if s else ""}</td></tr>' for d, t, s in rows)
     body = f"""
