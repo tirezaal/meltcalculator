@@ -240,9 +240,12 @@ def build_junk():
 
 # ---------- bars and rounds
 def build_bullion():
-    purities = [("0.999", ".999 fine"), ("0.9999", ".9999 fine"), ("0.925", ".925 sterling"), ("0.9", ".900 coin silver or gold"),
-                ("0.9167", "22 karat (.9167)"), ("0.75", "18 karat (.750)"), ("0.585", "14 karat (.585)"), ("0.417", "10 karat (.417)")]
-    popts = "".join(f'<option value="{v}">{esc(l)}</option>' for v, l in purities)
+    silver_p = [["0.999", ".999 fine"], ["0.9999", ".9999 fine"], ["0.925", ".925 sterling"],
+                ["0.9", ".900 US coin silver"], ["0.8", ".800 silver"]]
+    gold_p = [["0.9999", ".9999 fine (24 karat)"], ["0.999", ".999 fine"], ["0.9167", "22 karat (.9167)"],
+              ["0.9", ".900 US coin gold"], ["0.75", "18 karat (.750)"], ["0.585", "14 karat (.585)"], ["0.417", "10 karat (.417)"]]
+    popts = "".join(f'<option value="{v}">{esc(l)}</option>' for v, l in silver_p)
+    pdata = esc(json.dumps({"silver": silver_p, "gold": gold_p}))
     body = f"""
 <section class="hero">
   <div class="eyebrow">Bars, rounds and scrap</div>
@@ -252,7 +255,7 @@ def build_bullion():
     <div class="in">
       <div class="row2">
         <div><label for="b-metal">Metal</label><select id="b-metal"><option value="silver">Silver</option><option value="gold">Gold</option></select></div>
-        <div><label for="b-purity">Purity</label><select id="b-purity">{popts}</select></div>
+        <div><label for="b-purity">Purity</label><select id="b-purity" data-purities="{pdata}">{popts}</select></div>
       </div>
       <div class="row2">
         <div><label for="b-weight">Weight</label><input id="b-weight" inputmode="decimal" value="10"></div>

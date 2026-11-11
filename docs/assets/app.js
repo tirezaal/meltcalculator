@@ -88,7 +88,16 @@
     }
     render();
   });
-  document.addEventListener("change", render);
+  document.addEventListener("change", function(e){
+    if(e.target && e.target.id === "b-metal"){
+      var ps = $("#b-purity"), lists = {};
+      try { lists = JSON.parse(ps.getAttribute("data-purities")); } catch(err){}
+      var list = lists[e.target.value] || [];
+      ps.innerHTML = "";
+      list.forEach(function(p){ var o = document.createElement("option"); o.value = p[0]; o.textContent = p[1]; ps.appendChild(o); });
+    }
+    render();
+  });
   document.addEventListener("click", function(e){
     var b = e.target.closest && e.target.closest("[data-back]");
     if(b){
