@@ -76,9 +76,14 @@ footer{border-top:1px solid var(--rule);margin-top:72px;padding:28px 0 40px;font
 footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
 footer a{color:var(--mut)}
 
+.back{display:inline-flex;align-items:center;gap:6px;margin-top:22px;font-size:14px;font-weight:500;color:var(--ink);text-decoration:none;border:1px solid var(--rule2);background:var(--card);border-radius:3px;padding:7px 12px}
+.back:hover{border-color:var(--ink)}
+.back + .crumbs{margin-top:14px}
+
 @media (max-width:760px){
   .calc{grid-template-columns:1fr}
   .calc .in{border-right:0;border-bottom:1px solid var(--rule)}
   .groups{grid-template-columns:1fr}
-  .nav{display:none}
+  .top .wrap{height:auto;flex-direction:column;align-items:flex-start;gap:10px;padding-top:14px;padding-bottom:10px}
+  .nav{width:100%;overflow-x:auto;white-space:nowrap;gap:18px;padding-bottom:2px}
 }

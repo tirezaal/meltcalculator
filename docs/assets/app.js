@@ -90,6 +90,13 @@
   });
   document.addEventListener("change", render);
   document.addEventListener("click", function(e){
+    var b = e.target.closest && e.target.closest("[data-back]");
+    if(b){
+      var fromHere = false;
+      try { fromHere = document.referrer && new URL(document.referrer).origin === location.origin; } catch(err){}
+      if(fromHere && history.length > 1){ e.preventDefault(); history.back(); }
+      return;
+    }
     if(e.target.matches && e.target.matches("[data-reset-spot]")){
       custom = null; saveCustom(null);
       spot.gold = base.gold; spot.silver = base.silver;

@@ -29,6 +29,7 @@ NAV = [("/", "Calculator"), ("/junk-silver/", "Junk silver"), ("/bars-and-rounds
 def page(path, title, desc, body, jsonld=None):
     nav = "".join(f'<a href="{h}"{" aria-current=page" if h == path else ""}>{t}</a>' for h, t in NAV)
     ld = f'<script type="application/ld+json">{json.dumps(jsonld)}</script>' if jsonld else ""
+    back = '<a class="back" href="/" data-back>&larr; Back</a>' if path != "/" else ""
     out = f"""<!doctype html>
 <html lang="en">
 <head>
@@ -61,7 +62,7 @@ def page(path, title, desc, body, jsonld=None):
   <span data-custom-flag hidden>Using your custom spot</span>
 </div></div>
 <main id="main" class="wrap">
-{body}
+{back}{body}
 </main>
 <footer><div class="wrap">
   <span>Melt Calculator is made by <a href="https://plainsmadeco.com">PlainsMadeCo</a> in Lincoln, Nebraska.</span>
