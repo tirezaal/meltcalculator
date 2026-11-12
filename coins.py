@@ -35,6 +35,9 @@ COINS = [
     dict(slug="washington-quarter-silver", name="Washington Quarter (1932-1964)", short="Silver Washington quarter", metal="silver",
          years="1932-1964", grams=6.25, fineness=0.90, face=0.25, group="Quarters",
          ident="Washington quarters dated 1964 and earlier are 90% silver. No quarters were struck in 1933. 1965 and later circulation quarters have no silver; the only later silver ones are collector issues like the 1976-S 40% Bicentennial and silver proof sets."),
+    dict(slug="bicentennial-quarter-40", name="1976-S 40% Silver Bicentennial Quarter", short="1976-S silver Bicentennial quarter", metal="silver",
+         years="1976", grams=5.75, fineness=0.40, face=0.25, group="Quarters",
+         ident="Only the 1976-S quarters the Mint sold in its 40% silver three-coin uncirculated and proof sets contain silver. Bicentennial quarters found in circulation are copper-nickel clad, and the S-mint proofs in the regular six-coin proof sets are clad too, so an S mint mark alone does not mean silver. A silver one weighs 5.75 grams and its edge looks silvery gray; a clad one weighs 5.67 grams and shows a copper stripe on the edge."),
     # ---- halves
     dict(slug="barber-half", name="Barber Half Dollar", short="Barber half", metal="silver",
          years="1892-1915", grams=12.50, fineness=0.90, face=0.50, group="Half dollars",
@@ -51,6 +54,9 @@ COINS = [
     dict(slug="kennedy-half-40", name="Kennedy Half Dollar (1965-1970)", short="40% Kennedy half", metal="silver",
          years="1965-1970", grams=11.50, fineness=0.40, face=0.50, group="Half dollars",
          ident="Kennedy halves dated 1965 through 1970 are 40% silver. They look like later clad halves, so go by the date."),
+    dict(slug="bicentennial-half-40", name="1976-S 40% Silver Bicentennial Half Dollar", short="1976-S silver Bicentennial half", metal="silver",
+         years="1976", grams=11.50, fineness=0.40, face=0.50, group="Half dollars",
+         ident="Only the 1976-S halves the Mint sold in its 40% silver three-coin uncirculated and proof sets contain silver. Bicentennial halves found in circulation are copper-nickel clad, and the S-mint proofs in the regular six-coin proof sets are clad too, so an S mint mark alone does not mean silver. A silver one weighs 11.50 grams and its edge looks silvery gray; a clad one weighs 11.34 grams and shows a copper stripe on the edge."),
     # ---- dollars
     dict(slug="morgan-dollar", name="Morgan Silver Dollar", short="Morgan dollar", metal="silver",
          years="1878-1904, 1921", grams=26.73, fineness=0.90, face=1.00, group="Dollars",
