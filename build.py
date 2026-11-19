@@ -40,7 +40,7 @@ LISTINGS = {
                 "Logs bars, rounds and bullion coins with cost basis and values the whole stack at today's spot. App plus Excel spreadsheet, works offline."),
 }
 
-GROUP_ORDER = ["Nickels", "Dimes", "Quarters", "Half dollars", "Dollars",
+GROUP_ORDER = ["Nickels", "Dimes", "Quarters", "Half dollars", "Dollars", "Canadian silver coins",
                "Silver bullion coins", "US gold coins", "Gold bullion coins"]
 ROLLS = {"Dimes": 50, "Quarters": 40, "Half dollars": 20, "Dollars": 20, "Nickels": 40}
 NAV = [("/", "Calculator"), ("/junk-silver/", "Junk silver"), ("/bars-and-rounds/", "Bars and rounds"),

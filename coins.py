@@ -67,6 +67,10 @@ COINS = [
     dict(slug="eisenhower-dollar-40", name="40% Silver Eisenhower Dollar", short="40% Ike dollar", metal="silver",
          years="1971-1976", grams=24.59, fineness=0.40, face=1.00, group="Dollars",
          ident="Only the 40% silver collector Eisenhower dollars contain silver: the S-mint uncirculated coins sold in blue packs and the S-mint silver proofs sold in brown boxes. An S mint mark or proof finish alone does not mean silver, because the Mint also struck copper-nickel clad S-mint proofs, including every Ike in the regular proof sets from 1973 through 1978. Ikes from circulation are copper-nickel with no silver."),
+    # ---- Canadian silver coins
+    dict(slug="canadian-silver-dollar", name="Canadian Silver Dollar (1935-1967)", short="Canadian silver dollar", metal="silver",
+         years="1935-1967", grams=23.3276, fineness=0.80, face=None, group="Canadian silver coins",
+         ident="Canadian circulating dollars dated 1935 through 1967 are 80% silver. Canadian dollars dated 1968 and later are nickel with no silver, apart from special collector issues."),
     # ---- silver bullion coins
     dict(slug="american-silver-eagle", name="American Silver Eagle", short="Silver Eagle", metal="silver",
          years="1986-present", grams=31.103, fineness=0.999, fine_oz=1.0, face=None, group="Silver bullion coins",
